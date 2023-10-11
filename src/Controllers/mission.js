@@ -6,7 +6,7 @@ const GetAllMarchandise = async (req, res) => {
 
     let existmissions
     try {
-        existmissions = await mission.find({ marchandise: null});
+        existmissions = await mission.find({ marchandise: null}).populate('chauffeur');
     } catch (error) {
         return res.status(500).json({ success: false, message: 'something when wrong while extracting data', error: error })
     }
@@ -19,7 +19,7 @@ const GetAll = async (req, res) => {
 
     let existmissions
     try {
-        existmissions = await mission.find();
+        existmissions = await mission.find().populate('chauffeur');
     } catch (error) {
         return res.status(500).json({ success: false, message: 'something when wrong while extracting data', error: error })
     }
@@ -62,7 +62,7 @@ const FindById = async (req, res) => {
 
     let existmission
     try {
-        existmission = await mission.findById(id);
+        existmission = await mission.findById(id).populate('chauffeur');
     } catch (error) {
         return res.status(500).json({ success: false, message: 'something when wrong while extracting data', error: error })
     }

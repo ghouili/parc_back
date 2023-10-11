@@ -5,7 +5,7 @@ const GetAll = async (req, res) => {
 
     let existcars
     try {
-        existcars = await car.find();
+        existcars = await car.find().populate('chauffeur');
     } catch (error) {
         return res.status(500).json({ success: false, message: 'something when wrong while extracting data', error: error })
     }
@@ -22,7 +22,6 @@ const Add = async (req, res) => {
         type,
         fuelType,
         // chauffeur,
-        // panne,
     } = req.body;
     console.log(req.body);
     console.log(req.file);
@@ -38,7 +37,6 @@ const Add = async (req, res) => {
         fuelType,
         picture,
         // chauffeur,
-        // panne,
     });
 
     try {
@@ -76,7 +74,9 @@ const Update = async (req, res) => {
         brand,
         type,
         fuelType,
-    } = req.body;
+        panne,
+        ispanne,
+        chauffeur    } = req.body;
 
     const { id } = req.params;
 
@@ -109,19 +109,12 @@ const Update = async (req, res) => {
         existcar.picture = req.file.filename;
     }
 
-
-
-    // existcar.number = number;
-
-
-
-    existcar.brand = brand;
-
-    existcar.type = type;
-    existcar.fuelType = fuelType;
-
-
-
+    if ( brand) existcar.brand = brand;
+    if ( panne) existcar.panne = panne;
+    if ( ispanne) existcar.ispanne = ispanne;
+    if ( type) existcar.type = type;
+    if ( fuelType) existcar.fuelType = fuelType;
+    if ( chauffeur) existcar.chauffeur = chauffeur;
 
     try {
         await existcar.save();

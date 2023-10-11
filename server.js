@@ -12,7 +12,7 @@ const MaintenanceRouter = require('./src/Routes/maintenance');
 
 
 const server = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 server.use(bodyparser.json());
 server.use(cors());

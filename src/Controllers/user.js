@@ -19,6 +19,19 @@ const GetAllChauffeur = async (req, res) => {
 
 }
 
+const GetAllChauffeurNoCar = async (req, res) => {
+
+    let existUsers
+    try {
+        existUsers = await user.find({ role: 'chauffeur', car: null });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: 'something when wrong while extracting data', error: error })
+    }
+
+    return res.status(200).json({ success: true, message: 'success', data: existUsers });
+
+}
+
 const GetAll = async (req, res) => {
 
     let existUsers
@@ -55,15 +68,15 @@ const Add = async (req, res) => {
         return res.status(400).json({ success: false, message: 'user Already exist!!', error: false });
     }
 
-    let password;
-    if (req.body.password) {
-        password = req.body.password;
-    } else {
-        password = generator.generate({
-            length: 8,
-            numbers: true
-        });
-    }
+    // let password;
+    // if (req.body.password) {
+    //     password = req.body.password;
+    // } else {
+    //     password = generator.generate({
+    //         length: 8,
+    //         numbers: true
+    //     });
+    // }
     // const hashedPassword = bcrypt.hashSync(password, 10);
 
     const NewUser = new user({
@@ -74,7 +87,7 @@ const Add = async (req, res) => {
         competence,
         date_embouche,
         tel,
-        password,
+        password: cin,
         avatar,
         role,
     });
@@ -142,12 +155,12 @@ const FindById = async (req, res) => {
 const Update = async (req, res) => {
 
     const {
-        cin, nom, prenom, tel, role, niveau, competence, date_embouche
+        cin, nom, prenom, tel, niveau, competence, date_embouche, role
     } = req.body;
 
     const { id } = req.params;
 
-    // console.log(req.body);
+    console.log(req.body);
 
     let existUser
     try {
@@ -203,6 +216,7 @@ const Update = async (req, res) => {
     existUser.competence = competence;
     existUser.niveau = niveau;
     existUser.date_embouche = date_embouche;
+    existUser.role = role;
 
 
     try {
@@ -254,6 +268,7 @@ const Delete = async (req, res) => {
 exports.Add = Add
 exports.GetAll = GetAll
 exports.GetAllChauffeur = GetAllChauffeur
+exports.GetAllChauffeurNoCar = GetAllChauffeurNoCar
 exports.Login = Login
 exports.FindById = FindById
 exports.Update = Update

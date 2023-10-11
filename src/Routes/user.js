@@ -8,6 +8,8 @@ route.get('/', UserController.GetAll);
 
 route.get('/chauffeur', UserController.GetAllChauffeur);
 
+route.get('/nocar', UserController.GetAllChauffeurNoCar);
+
 route.get('/:id', UserController.FindById);
 
 route.put('/:id', fileuploader.single('avatar'), UserController.Update);
